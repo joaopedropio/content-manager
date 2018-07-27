@@ -1,0 +1,8 @@
+.vs
+.vscode
+*.user
+bin
+obj
+out
+ffmpeg.gz
+mp4box.gz
