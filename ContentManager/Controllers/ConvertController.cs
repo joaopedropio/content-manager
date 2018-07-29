@@ -2,6 +2,7 @@
 using FFMPEGWrapper.Enums;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
 using static Helper.FileNameExtensions;
@@ -40,7 +41,7 @@ namespace ContentManager.Controllers
             var outputFilePath = tempFolder + name + ".mp4";
             var outputFileName = name + ".mp4";
 
-            SaveFile(inputFilePath, file);
+            file.Save(inputFilePath);
 
             ffmpeg.Convert(Profile.SimpleMP4, inputFilePath, outputFilePath);
 
@@ -55,11 +56,10 @@ namespace ContentManager.Controllers
 
             var file = GetFileFromRequest(Request);
             var filePath = tempFolder + file.FileName;
+            file.Save(filePath);
             var name = GetNameFromFileName(file.FileName);
             var compressedFile = BuildFilePath(compresssedFolder, name + ".zip");
-
-            SaveFile(filePath, file);
-
+            
             //mp4box.Dashify();
 
             //var compressedFile = CompressFiles(convertedFolder, file.FileName, compresssedFolder);
@@ -97,17 +97,6 @@ namespace ContentManager.Controllers
             var bytes = System.IO.File.ReadAllBytes(file);
             var stream = new MemoryStream(bytes);
             return File(stream, "application/octet-stream", "video.zip");
-        }
-
-        private void SaveFile(string filePath, IFormFile file)
-        {
-            if (file.Length > 0)
-            {
-                using (var stream = new FileStream(filePath, FileMode.Create))
-                {
-                    file.CopyTo(stream);
-                }
-            }
         }
     }
 }
