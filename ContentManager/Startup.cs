@@ -33,6 +33,8 @@ namespace ContentManager
                 app.UseDeveloperExceptionPage();
             }
 
+            app.UseStaticFiles();
+
             app.UseMvcWithDefaultRoute();
         }
     }

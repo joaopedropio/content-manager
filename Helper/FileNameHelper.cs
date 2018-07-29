@@ -30,5 +30,12 @@ namespace Helper
 
             return fields[0];
         }
+
+        public static string BuildFilePath(string path, string fileName)
+        {
+            var isWindows = RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
+            var separator = isWindows ? '\\' : '/';
+            return path.EndsWith(separator) ? path + fileName : path + separator + fileName;
+        }
     }
 }

@@ -55,12 +55,17 @@ namespace ContentManager.Controllers
 
             var file = GetFileFromRequest(Request);
             var filePath = tempFolder + file.FileName;
+            var name = GetNameFromFileName(file.FileName);
+            var compressedFile = BuildFilePath(compresssedFolder, name + ".zip");
 
             SaveFile(filePath, file);
 
             //mp4box.Dashify();
 
-            var compressedFile = CompressFiles(convertedFolder, file.FileName, compresssedFolder);
+            //var compressedFile = CompressFiles(convertedFolder, file.FileName, compresssedFolder);
+
+            ZipFile.CreateFromDirectory(convertedFolder, compresssedFolder);
+
 
             return UploadCompressedFile(compressedFile);
         }
@@ -103,15 +108,6 @@ namespace ContentManager.Controllers
                     file.CopyTo(stream);
                 }
             }
-        }
-
-        private string CompressFiles(string filePath, string fileName, string destinationFolder)
-        {
-            var path = filePath.TrimEnd('\\');
-            var name = $"{fileName.Split('.')[0]}.zip";
-            var destination = $"{ destinationFolder }{ name }";
-            ZipFile.CreateFromDirectory(path, destination);
-            return destination;
         }
     }
 }
