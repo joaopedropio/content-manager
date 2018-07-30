@@ -7,20 +7,15 @@ COPY FFMPEGWrapper FFMPEGWrapper
 COPY MP4BoxWrapper MP4BoxWrapper
 COPY ContentManager ContentManager
 
-RUN mkdir app		
-RUN cd Helper && dotnet publish -c Release -o out && cd out && cp Helper.dll Helper.pdb ../../app && cd ../../
-RUN cd FFMPEGWrapper && dotnet publish -c Release -o out && cd out && cp FFMPEGWrapper.dll FFMPEGWrapper.pdb ../../app && cd ../../
-RUN cd MP4BoxWrapper && dotnet publish -c Release -o out && cd out && cp MP4BoxWrapper.dll Helper.pdb ../../app && cd ../../
-RUN cd ContentManager && dotnet publish -c Release -o out && cd out && cp * ../../app
+RUN cd ContentManager && dotnet publish -c Release -o out
 
 # Production Environment
 FROM microsoft/aspnetcore:2.0
 WORKDIR /app
-COPY --from=build-env /build/app .
-COPY ffmpeg.gz /
-COPY mp4box.gz /
-RUN gzip -d /ffmpeg.gz && chmod +x /ffmpeg
-RUN gzip -d /mp4box.gz && chmod +x /mp4box
+COPY --from=build-env /build/ContentManager/out .
+COPY *.gz /
+RUN gzip -d /ffmpeg.gz && chmod +x /ffmpeg \
+ && gzip -d /mp4box.gz && chmod +x /mp4box
 
 # Environment Variables
 ENV FFMPEG_PATH=/ffmpeg
