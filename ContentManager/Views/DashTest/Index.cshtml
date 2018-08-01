@@ -1,0 +1,12 @@
+﻿@{ 
+    Layout = "_MainLayout";
+}
+
+<div class="fri">
+    <input type="text" name="manifestUrl" id="manifestUrl" /> URL do manifesto
+    <input type="text" name="authorization" id="authorization" /> Autorização
+    <input type="button" name="button" onclick="setupManifestUrl()" value="Play" />
+</div>
+<div>
+    <video id="video" width="640" height="360" crossOrigin="anonymous" controls></video>
+</div>

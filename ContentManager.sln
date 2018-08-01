@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FFMPEGWrapper", "FFMPEGWrap
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MP4BoxWrapper", "MP4BoxWrapper\MP4BoxWrapper.csproj", "{90CA05A0-1BE3-47EE-ADD6-81BB2327BBCE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Helper", "Helper\Helper.csproj", "{8D8219C6-FC2C-48E1-9AAC-F98A59771975}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Helper", "Helper\Helper.csproj", "{8D8219C6-FC2C-48E1-9AAC-F98A59771975}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

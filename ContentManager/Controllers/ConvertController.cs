@@ -29,6 +29,12 @@ namespace ContentManager.Controllers
             this.ffmpeg = new FFMPEG(FfmpegExecutablePath);
         }
 
+        [HttpGet]
+        public IActionResult Index()
+        {
+            return View();
+        }
+
         [Route("mp4")]
         [HttpPost]
         public IActionResult ConvertVideo()
