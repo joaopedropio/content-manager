@@ -10,14 +10,14 @@ namespace ContentManager.WebSocketHelpers
 {
     public class WebSocketConnectionManager
     {
-        private Dictionary<string, WebSocket> _sockets = new Dictionary<string, WebSocket>();
+        private ConcurrentDictionary<string, WebSocket> _sockets = new ConcurrentDictionary<string, WebSocket>();
 
         public WebSocket GetSocketById(string id)
         {
             return _sockets.FirstOrDefault(p => p.Key == id).Value;
         }
 
-        public Dictionary<string, WebSocket> GetAll()
+        public ConcurrentDictionary<string, WebSocket> GetAll()
         {
             return _sockets;
         }
@@ -28,13 +28,13 @@ namespace ContentManager.WebSocketHelpers
         }
         public void AddSocket(WebSocket socket)
         {
-            _sockets.Add(CreateConnectionId(), socket);
+            _sockets.TryAdd(CreateConnectionId(), socket);
         }
 
         public async Task RemoveSocket(string id)
         {
             WebSocket socket;
-            _sockets.Remove(id, out socket);
+            _sockets.TryRemove(id, out socket);
 
             await socket.CloseAsync(closeStatus: WebSocketCloseStatus.NormalClosure,
                                     statusDescription: "Closed by the WebSocketManager",

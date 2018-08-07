@@ -2,7 +2,7 @@
 using Helper;
 using System;
 using System.Diagnostics;
-
+using System.Threading.Tasks;
 
 namespace FFMPEGWrapper
 {
@@ -19,24 +19,24 @@ namespace FFMPEGWrapper
             this.executable = executablePath;
         }
 
-        public Process Convert(Profile profile, string inputFilePath, string outputFilePath)
+        public async Task<int> Convert(Profile profile, string inputFilePath, string outputFilePath)
         {
-            return Convert(Arguments.GetFromProfile(profile, inputFilePath, outputFilePath));
+            return await Convert(Arguments.GetFromProfile(profile, inputFilePath, outputFilePath));
         }
 
-        public Process Convert(Arguments arguments)
+        public async Task<int> Convert(Arguments arguments)
         {
-            return Convert(arguments.Parse());
+            return await Convert(arguments.Parse());
         }
 
-        public Process Convert(string arguments)
+        public async Task<int> Convert(string arguments)
         {
-            return Convert(arguments, this.ErrorReceived, this.OutputReceived, this.ConvertionDone);
+            return await Convert(arguments, this.ErrorReceived, this.OutputReceived, this.ConvertionDone);
         }
 
-        public Process Convert(string arguments, DataReceivedEventHandler onErrorDataReceived, DataReceivedEventHandler onOutputDataReceived, EventHandler onExit)
+        public async Task<int> Convert(string arguments, DataReceivedEventHandler onErrorDataReceived, DataReceivedEventHandler onOutputDataReceived, EventHandler onExit)
         {
-            return ProcessFactory.GetProcess(this.executable, arguments, onErrorDataReceived, onOutputDataReceived, onExit);
+            return await ProcessFactory.Execute(this.executable, arguments, onErrorDataReceived, onOutputDataReceived, onExit);
         }
     }
 }

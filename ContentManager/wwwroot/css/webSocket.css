@@ -1,0 +1,8 @@
+﻿#consoleWindow {
+    background-color: black;
+    color: white;
+}
+
+#progressBar {
+    width: 0%;
+}

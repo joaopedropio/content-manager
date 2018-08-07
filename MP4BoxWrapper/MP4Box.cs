@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Threading.Tasks;
 using static Helper.FileNameExtensions;
 
 namespace MP4BoxWrapper
@@ -21,7 +22,7 @@ namespace MP4BoxWrapper
             this.inputFilePath = inputFilePath;
         }
 
-        public Process Dashify()
+        public Task<int> Dashify()
         {
             var filename = GetFileNameFromFilePath(this.inputFilePath);
             var name = GetNameFromFileName(filename);
@@ -29,14 +30,14 @@ namespace MP4BoxWrapper
             return Dashify(this.executable, defaultDashArguments);
         }
 
-        public Process Dashify(string executable, string arguments)
+        public Task<int> Dashify(string executable, string arguments)
         {
             return Dashify(executable, arguments, ConvertionDone, OutputReceived, ErrorReceived);
         }
 
-        public Process Dashify(string executable, string arguments, EventHandler ConvertionDone, DataReceivedEventHandler OutputReceived, DataReceivedEventHandler ErrorReceived)
+        public async Task<int> Dashify(string executable, string arguments, EventHandler ConvertionDone, DataReceivedEventHandler OutputReceived, DataReceivedEventHandler ErrorReceived)
         {
-            return Helper.ProcessFactory.GetProcess(executable, arguments, ErrorReceived, OutputReceived, ConvertionDone);
+            return await Helper.ProcessFactory.Execute(executable, arguments, ErrorReceived, OutputReceived, ConvertionDone);
         }
     }
 }

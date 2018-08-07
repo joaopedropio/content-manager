@@ -10,28 +10,28 @@ namespace FFMPEGWrapper
         public bool OverRightOutputFiles { get; set; }
         public string InputFilePath { get; set; }
         public string OutputFilePath { get; set; }
-        public int AudioChannels { get; set; }
+        public int? AudioChannels { get; set; }
         public AudioCodec AudioCodec { get; set; }
         public VideoCodec VideoCodec { get; set; }
-        public int AudioBitrate { get; set; }
+        public int? AudioBitrate { get; set; }
         public X264Params X264Params { get; set; }
-        public int VideoBitrate { get; set; }
-        public int MaxRate { get; set; }
-        public int BufferSize { get; set; }
+        public int? VideoBitrate { get; set; }
+        public int? MaxRate { get; set; }
+        public int? BufferSize { get; set; }
         public string VideoFilters { get; set; }
 
         private string ParseOverRightOutputFiles() => OverRightOutputFiles ? " -y" : "";
         private string ParseInputFilePath() => string.Format(" -i {0}", IsWindows ? $"\"{InputFilePath}\"" : InputFilePath);
         private string ParseOutputFilePath() => string.Format(" {0}", IsWindows ? $"\"{OutputFilePath}\"" : OutputFilePath);
-        private string ParseAudioChannels() => $" -ac {AudioChannels}";
+        private string ParseAudioChannels() => AudioChannels == null ? "" : $" -ac {AudioChannels}";
         private string ParseAudioCodec() => $" -c:a {this.AudioCodec.ToString().ToLower()}";
         private string ParseVideoCodec() => $" -c:v {this.VideoCodec.ToString().ToLower()}";
-        private string ParseAudioBitrate() => $" -ab {AudioBitrate}";
-        private string ParseX264Params() => $" -x264-params {X264Params.ToString()}";
-        private string ParseVideoBitrate() => $" -b:v {VideoBitrate}";
-        private string ParseMaxRate() => $" -maxrate {MaxRate}";
-        private string ParseBufferSize() => $" -bufsize {BufferSize}";
-        private string ParseVideoFilters() => $" -vf {VideoFilters}";
+        private string ParseAudioBitrate() => AudioBitrate == null ? "" : $" -ab {AudioBitrate}";
+        private string ParseX264Params() => X264Params == null ? "" : $" -x264-params {X264Params.ToString()}";
+        private string ParseVideoBitrate() => VideoBitrate == null ? "" : $" -b:v {VideoBitrate}";
+        private string ParseMaxRate() => MaxRate == null ? "" : $" -maxrate {MaxRate}";
+        private string ParseBufferSize() => BufferSize == null ? "" : $" -bufsize {BufferSize}";
+        private string ParseVideoFilters() => VideoFilters == null? "" : $" -vf {VideoFilters}";
 
         public string Parse()
         {
@@ -46,6 +46,14 @@ namespace FFMPEGWrapper
             switch (profile)
             {
                 case Profile.SimpleMP4:
+                    return new Arguments()
+                    {
+                        InputFilePath = inputFilePath,
+                        OutputFilePath = outputFilePath,
+                        VideoCodec = VideoCodec.Libx264,
+                        AudioCodec = AudioCodec.Aac,
+                    };
+                case Profile.EspecificForDash:
                     return new Arguments()
                     {
                         OverRightOutputFiles = true,

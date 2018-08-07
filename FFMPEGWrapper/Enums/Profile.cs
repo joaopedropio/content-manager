@@ -2,6 +2,7 @@
 {
     public enum Profile
     {
+        EspecificForDash,
         SimpleMP4
     }
 }

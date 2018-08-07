@@ -10,6 +10,7 @@ using System.Diagnostics;
 using ContentManager.WebSocketHelpers;
 using System.Threading.Tasks;
 using System;
+using System.Threading;
 
 namespace ContentManager.Controllers
 {
@@ -56,9 +57,9 @@ namespace ContentManager.Controllers
 
         [Route("mp4")]
         [HttpPost]
-        public IActionResult ConvertVideo()
+        public async Task<IActionResult> ConvertVideo()
         {
-            HandleDirectories(convertedFolder, compresssedFolder);
+            HandleDirectories(tempFolder);
 
             var file = GetFileFromRequest(Request);
             var name = GetNameFromFileName(file.FileName);
@@ -68,7 +69,9 @@ namespace ContentManager.Controllers
 
             file.Save(inputFilePath);
 
-            ffmpeg.Convert(Profile.SimpleMP4, inputFilePath, outputFilePath);
+            await ffmpeg.Convert(Profile.SimpleMP4, inputFilePath, outputFilePath);
+
+            //ffmpeg.Convert(Profile.EspecificForDash, inputFilePath, outputFilePath);
 
             return UploadFile(outputFilePath, outputFileName);
         }

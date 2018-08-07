@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Threading.Tasks;
 
 namespace Helper
 {
@@ -16,7 +17,7 @@ namespace Helper
             };
         }
 
-        public static Process GetProcess(string executable, string arguments, DataReceivedEventHandler onErrorDataReceived, DataReceivedEventHandler onOutputDataReceived, EventHandler onExit)
+        public static async Task<int> Execute(string executable, string arguments, DataReceivedEventHandler onErrorDataReceived, DataReceivedEventHandler onOutputDataReceived, EventHandler onExit)
         {
             using (var process = new Process())
             {
@@ -30,7 +31,9 @@ namespace Helper
                 process.BeginOutputReadLine();
                 process.BeginErrorReadLine();
 
-                return process;
+                await Task.Run(() => process.WaitForExit());
+
+                return process.ExitCode;
             }
         }
     }
