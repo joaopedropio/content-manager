@@ -4,9 +4,10 @@ using System.Threading.Tasks;
 
 namespace ContentManager.WebSocketHelpers
 {
-    public class ChatMessageHandler : WebSocketHandler
+    public class ProcessMessageHandler : WebSocketHandler
     {
-        public ChatMessageHandler(WebSocketConnectionManager webSocketConnectionManager) : base(webSocketConnectionManager)
+        public ProcessMessageHandler(WebSocketConnectionManager webSocketConnectionManager)
+            : base(webSocketConnectionManager)
         {
         }
 

@@ -21,48 +21,22 @@ namespace MP4BoxWrapper
             this.inputFilePath = inputFilePath;
         }
 
-        // Events
-        public void OnConvertionTerminated(object sender, EventArgs e) => ConvertionDone?.Invoke(sender, e);
-        public void OnOutputReceived(object sender, DataReceivedEventArgs d) => OutputReceived?.Invoke(sender, d);
-        public void OnErrorReceived(object sender, DataReceivedEventArgs d) => ErrorReceived?.Invoke(sender, d);
-
-
-        public int Dashify()
+        public Process Dashify()
         {
             var filename = GetFileNameFromFilePath(this.inputFilePath);
             var name = GetNameFromFileName(filename);
             var defaultDashArguments = $" -dash 2000 -rap-frag -rap -profile onDemand -out {name}.mpd {filename}#video {filename}#audio";
-            return Dashify(defaultDashArguments);
+            return Dashify(this.executable, defaultDashArguments);
         }
 
-        public int Dashify(string arguments)
+        public Process Dashify(string executable, string arguments)
         {
-            using (var process = new Process())
-            {
-                process.StartInfo = GetProcessInfo(arguments);
-
-                process.Exited += OnConvertionTerminated;
-                process.OutputDataReceived += OnOutputReceived;
-                process.ErrorDataReceived += OnErrorReceived;
-
-                process.Start();
-                process.BeginOutputReadLine();
-                process.BeginErrorReadLine();
-                process.WaitForExit();
-
-                return process.ExitCode;
-            }
+            return Dashify(executable, arguments, ConvertionDone, OutputReceived, ErrorReceived);
         }
 
-        private ProcessStartInfo GetProcessInfo(string arguments)
+        public Process Dashify(string executable, string arguments, EventHandler ConvertionDone, DataReceivedEventHandler OutputReceived, DataReceivedEventHandler ErrorReceived)
         {
-            return new ProcessStartInfo()
-            {
-                FileName = this.executable,
-                Arguments = arguments,
-                RedirectStandardOutput = true,
-                RedirectStandardError = true
-            };
+            return Helper.ProcessFactory.GetProcess(executable, arguments, ErrorReceived, OutputReceived, ConvertionDone);
         }
     }
 }

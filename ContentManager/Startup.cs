@@ -38,7 +38,7 @@ namespace ContentManager
 
             app.UseWebSockets();
 
-            app.MapWebSocketManager("/ws", serviceProvider.GetService<ChatMessageHandler>());
+            app.MapWebSocketManager("/ws", serviceProvider.GetService<ProcessMessageHandler>());
 
             app.UseStaticFiles();
 

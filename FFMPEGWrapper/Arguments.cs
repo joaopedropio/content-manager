@@ -1,10 +1,12 @@
 ﻿using FFMPEGWrapper.Enums;
 using System;
+using System.Runtime.InteropServices;
 
 namespace FFMPEGWrapper
 {
     public class Arguments
     {
+        public bool IsWindows = RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
         public bool OverRightOutputFiles { get; set; }
         public string InputFilePath { get; set; }
         public string OutputFilePath { get; set; }
@@ -19,8 +21,8 @@ namespace FFMPEGWrapper
         public string VideoFilters { get; set; }
 
         private string ParseOverRightOutputFiles() => OverRightOutputFiles ? " -y" : "";
-        private string ParseInputFilePath() => $" -i {InputFilePath}";
-        private string ParseOutputFilePath() => $" {OutputFilePath}";
+        private string ParseInputFilePath() => string.Format(" -i {0}", IsWindows ? $"\"{InputFilePath}\"" : InputFilePath);
+        private string ParseOutputFilePath() => string.Format(" {0}", IsWindows ? $"\"{OutputFilePath}\"" : OutputFilePath);
         private string ParseAudioChannels() => $" -ac {AudioChannels}";
         private string ParseAudioCodec() => $" -c:a {this.AudioCodec.ToString().ToLower()}";
         private string ParseVideoCodec() => $" -c:v {this.VideoCodec.ToString().ToLower()}";

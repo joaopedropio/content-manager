@@ -30,6 +30,9 @@ namespace ContentManager.WebSocketHelpers
             if (socket.State != WebSocketState.Open)
                 return;
 
+            if (message == null)
+                return;
+
             await socket.SendAsync(buffer: new ArraySegment<byte>(array: Encoding.ASCII.GetBytes(message),
                                                                   offset: 0,
                                                                   count: message.Length),
