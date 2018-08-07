@@ -6,6 +6,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
 using static Helper.FileNameExtensions;
+using System.Diagnostics;
+using ContentManager.WebSocketHelpers;
+using System.Threading.Tasks;
 
 namespace ContentManager.Controllers
 {
@@ -18,8 +21,15 @@ namespace ContentManager.Controllers
         private string convertedFolder;
         private string compresssedFolder;
         private FFMPEG ffmpeg;
+        private ChatMessageHandler webSocket;
 
-        public ConvertController(Configuration config)
+        public async void OnErrorReceived(object sender, DataReceivedEventArgs d)
+        {
+            System.Console.WriteLine(d.Data);
+            await this.webSocket.SendMessageToAllAsync(d.Data);
+        }
+
+        public ConvertController(Configuration config, ChatMessageHandler webSocket)
         {
             this.FfmpegExecutablePath = config.FfmpegExecutablePath;
             this.MP4BoxExecutablePath = config.MP4BoxExecutablePath;
@@ -27,6 +37,8 @@ namespace ContentManager.Controllers
             this.convertedFolder = config.ConvertedFolder;
             this.compresssedFolder = config.CompresssedFolder;
             this.ffmpeg = new FFMPEG(FfmpegExecutablePath);
+            this.ffmpeg.ErrorReceived += OnErrorReceived;
+            this.webSocket = webSocket;
         }
 
         [HttpGet]

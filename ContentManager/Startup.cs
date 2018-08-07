@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Http.Features;
+using System;
+using ContentManager.WebSocketHelpers;
 
 namespace ContentManager
 {
@@ -24,14 +26,19 @@ namespace ContentManager
                 x.ValueLengthLimit = int.MaxValue;
                 x.MultipartBodyLengthLimit = long.MaxValue;
             });
+            services.AddWebSocketManager();
         }
 
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, IServiceProvider serviceProvider)
         {
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            app.UseWebSockets();
+
+            app.MapWebSocketManager("/ws", serviceProvider.GetService<ChatMessageHandler>());
 
             app.UseStaticFiles();
 
