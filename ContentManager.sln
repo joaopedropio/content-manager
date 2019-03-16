@@ -11,6 +11,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MP4BoxWrapper", "MP4BoxWrap
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Helper", "Helper\Helper.csproj", "{8D8219C6-FC2C-48E1-9AAC-F98A59771975}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MediaManager", "MediaDeployer\MediaManager.csproj", "{B9A78C3B-40DF-4860-9A69-9660C7562765}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MediaManagerTests", "MediaManagerTests\MediaManagerTests.csproj", "{37F3DE17-7E20-4BFA-890C-F98FB1AC409F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +37,14 @@ Global
 		{8D8219C6-FC2C-48E1-9AAC-F98A59771975}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8D8219C6-FC2C-48E1-9AAC-F98A59771975}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8D8219C6-FC2C-48E1-9AAC-F98A59771975}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B9A78C3B-40DF-4860-9A69-9660C7562765}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B9A78C3B-40DF-4860-9A69-9660C7562765}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B9A78C3B-40DF-4860-9A69-9660C7562765}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B9A78C3B-40DF-4860-9A69-9660C7562765}.Release|Any CPU.Build.0 = Release|Any CPU
+		{37F3DE17-7E20-4BFA-890C-F98FB1AC409F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{37F3DE17-7E20-4BFA-890C-F98FB1AC409F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{37F3DE17-7E20-4BFA-890C-F98FB1AC409F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{37F3DE17-7E20-4BFA-890C-F98FB1AC409F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

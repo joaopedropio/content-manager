@@ -15,6 +15,7 @@ namespace ContentManager
         public string TempFolder { get; }
         public string ConvertedFolder { get; }
         public string CompresssedFolder { get; }
+        public string SFTPHost { get; }
 
         public Configuration() : this(new ConfigurationBuilder().AddEnvironmentVariables().Build()) { }
 
@@ -33,6 +34,9 @@ namespace ContentManager
             this.TempFolder = Path.GetTempPath() + (configuration.GetValue<string>("TEMP_FOLDER") ?? @"content-converter\");
             this.ConvertedFolder = this.TempFolder + (configuration.GetValue<string>("CONVERTED_FOLDER") ?? @"converted\");
             this.CompresssedFolder = this.TempFolder + (configuration.GetValue<string>("COMPRESSED_FOLDER") ?? @"compressed\");
+
+            // Content Server SFTP
+            this.SFTPHost = configuration.GetValue<string>("SFTP_HOST") ?? "http://content-server";
         }
     }
 }
