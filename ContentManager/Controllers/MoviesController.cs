@@ -2,8 +2,10 @@
 
 namespace ContentManager.Controllers
 {
-    public class MoviesController : Controller
+    [Route("/dashtest")]
+    public class DashTestController : Controller
     {
+        [HttpGet]
         public IActionResult Index()
         {
             return View();

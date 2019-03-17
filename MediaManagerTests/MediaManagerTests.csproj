@@ -5,10 +5,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="InputFiles\dashvideo.zip" />
     <None Remove="InputFiles\media.avi" />
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Include="InputFiles\dashvideo.zip">
+      <CustomToolNamespace>MediaManagerTests.InputFiles</CustomToolNamespace>
+    </EmbeddedResource>
     <EmbeddedResource Include="InputFiles\media.avi">
       <CustomToolNamespace>MediaManagerTests.InputFiles</CustomToolNamespace>
     </EmbeddedResource>

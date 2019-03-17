@@ -8,7 +8,8 @@ namespace MediaManagerTests
     public class SFTPMediaManagerTests
     {
         private SFTPMediaManager sftpClient;
-        private Stream media;
+        private Stream AVIMedia;
+        private Stream DashMedia;
 
         public SFTPMediaManagerTests()
         {
@@ -16,16 +17,16 @@ namespace MediaManagerTests
             var port = 2222;
             var username = "content";
             var password = "password";
-            var fileName = "media.avi";
 
             this.sftpClient = new SFTPMediaManager(host, username, password, port);
-            this.media = FileHelper.GetInputFile(fileName);
+            this.AVIMedia = FileHelper.GetInputFile("media.avi");
+            this.DashMedia = FileHelper.GetInputFile("dashvideo.zip");
         }
         
         [Test]
         public void Should_UploadMedia()
         {
-            sftpClient.UploadMedia(media, "/content/media.avi");
+            sftpClient.UploadMedia(AVIMedia, "/content/media.avi");
         }
 
         [Test]
@@ -39,7 +40,14 @@ namespace MediaManagerTests
         [Test]
         public void Should_RemoveMedia()
         {
-            sftpClient.RemodeMedia("/content/media.avi");
+            sftpClient.RemoveMedia("/content/media.avi");
+        }
+
+        [Test]
+        public void Should_DashMedia()
+        {
+            // dash media must be zipped and have just files, no directories
+            sftpClient.UploadDashMedia(DashMedia, "/content/test/");
         }
     }
 }

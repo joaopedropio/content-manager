@@ -7,8 +7,10 @@ namespace MediaManager
 {
     public interface IMediaManager
     {
-        void UploadMedia(Stream media, string path);
-        Stream DownloadMedia(string path);
-        void RemodeMedia(string path);
+        void UploadMedia(Stream media, string remotePath);
+        Stream DownloadMedia(string remotePath);
+        void RemoveMedia(string remotePath);
+        void UploadDirectory(string localPath, string remotePath);
+        void UploadDashMedia(Stream dashzip, string remotePath);
     }
 }
