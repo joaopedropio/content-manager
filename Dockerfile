@@ -15,8 +15,8 @@ FROM microsoft/dotnet:2.2-aspnetcore-runtime-alpine
 WORKDIR /app
 COPY --from=build-env /build/ContentManager/out .
 COPY *.gz /
-RUN gzip -d /ffmpeg.gz  && chmod +x /ffmpeg  && rm /ffmpeg.gz && \
-    gzip -d /ffprobe.gz && chmod +x /ffprobe && rm /ffprobe.gz && \
-    gzip -d /mp4box.gz  && chmod +x /mp4box  && rm /mp4box.gz
+RUN gzip -d /ffmpeg.gz  && chmod +x /ffmpeg  && \
+    gzip -d /ffprobe.gz && chmod +x /ffprobe && \
+    gzip -d /mp4box.gz  && chmod +x /mp4box
 
 ENTRYPOINT ["dotnet", "ContentManagerWeb.dll"]
