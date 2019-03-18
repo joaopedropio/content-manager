@@ -5,6 +5,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Http.Features;
 using System;
 using ContentManager.WebSocketHelpers;
+using MediaManagerLib;
+using ContentManagerWeb.Helpers;
 
 namespace ContentManager
 {
@@ -27,6 +29,10 @@ namespace ContentManager
                 x.MultipartBodyLengthLimit = long.MaxValue;
             });
             services.AddWebSocketManager();
+            services.AddScoped<IMediaManager>((provider) =>
+            {
+                return MediaManagerFactory.GetInstance();
+            });
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, IServiceProvider serviceProvider)

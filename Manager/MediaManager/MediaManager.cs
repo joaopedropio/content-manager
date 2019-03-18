@@ -18,7 +18,7 @@ namespace MediaManagerLib
         public DataReceivedEventHandler ErrorReceived { get; set; }
 
         // Callback
-        public Action<ulong> ProgressStatus { get; private set; }
+        public Action<ulong> ProgressStatus { get; set; }
 
         public MediaManager(string ffmpegExecutablePath, string mp4boxExecutablePath, string host, string username, string password, int port)
         {

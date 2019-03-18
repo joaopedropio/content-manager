@@ -1,13 +1,13 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using ContentManager.WebSocketHelpers;
+using MediaManagerLib;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
-using static Helper.FileHelper;
-using System.Diagnostics;
-using ContentManager.WebSocketHelpers;
 using System.Threading.Tasks;
-using System;
-using MediaManagerLib;
+using static Helper.FileHelper;
 
 namespace ContentManager.Controllers
 {
@@ -15,7 +15,7 @@ namespace ContentManager.Controllers
     public class ConvertController : Controller
     {
         private readonly ProcessMessageHandler webSocket;
-        private readonly MediaManager mediaManager;
+        private readonly IMediaManager mediaManager;
         private readonly string tempFolder;
         private readonly string convertedFolder;
         private readonly string compresssedFolder;
@@ -26,12 +26,22 @@ namespace ContentManager.Controllers
             await webSocket.SendMessageToAllAsync(d.Data);
         }
 
+        public async void OnOutputReceived(object sender, DataReceivedEventArgs e)
+        {
+            await Task.Run(() => Console.WriteLine("Done!"));
+        }
+
         public async void OnConvertionDone(object sender, EventArgs e)
         {
             await Task.Run(() => Console.WriteLine("Done!"));
         }
 
-        public ConvertController(MediaManager mediaManager, ProcessMessageHandler webSocket)
+        public async void ProgressStatus(ulong percentage)
+        {
+            await Task.Run(() => Console.WriteLine(percentage));
+        }
+
+        public ConvertController(IMediaManager mediaManager, ProcessMessageHandler webSocket)
         {
             var config = new Configuration();
 
@@ -40,6 +50,11 @@ namespace ContentManager.Controllers
             this.compresssedFolder = config.CompresssedFolder;
             this.mediaManager = mediaManager;
             this.webSocket = webSocket;
+
+            this.mediaManager.ConvertionDone = this.OnConvertionDone;
+            this.mediaManager.ErrorReceived = this.OnErrorReceived;
+            this.mediaManager.OutputReceived = this.OnOutputReceived;
+            this.mediaManager.ProgressStatus = this.ProgressStatus;
         }
 
         [HttpGet]
