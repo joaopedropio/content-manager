@@ -36,7 +36,7 @@ namespace FFMPEGWrapper
 
         public async Task<int> Convert(string arguments, DataReceivedEventHandler onErrorDataReceived, DataReceivedEventHandler onOutputDataReceived, EventHandler onExit)
         {
-            return await ProcessFactory.Execute(this.executable, arguments, onErrorDataReceived, onOutputDataReceived, onExit);
+            return await ProcessHelper.Execute(this.executable, arguments, onErrorDataReceived, onOutputDataReceived, onExit);
         }
     }
 }

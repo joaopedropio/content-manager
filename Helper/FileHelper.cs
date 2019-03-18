@@ -2,7 +2,7 @@
 
 namespace Helper
 {
-    public static class FileNameExtensions
+    public static class FileHelper
     {
         public static string GetFileNameFromFilePath(string filePath)
         {

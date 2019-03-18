@@ -1,4 +1,5 @@
-﻿using MediaManager;
+﻿using MediaManagerLib;
+using MediaManagerLib.Deployer;
 using MediaManagerTests.Helpers;
 using NUnit.Framework;
 using System.IO;
@@ -7,7 +8,7 @@ namespace MediaManagerTests
 {
     public class SFTPMediaManagerTests
     {
-        private SFTPMediaManager sftpClient;
+        private SFTPMediaDeployer sftpClient;
         private Stream AVIMedia;
         private Stream DashMedia;
 
@@ -18,7 +19,7 @@ namespace MediaManagerTests
             var username = "content";
             var password = "password";
 
-            this.sftpClient = new SFTPMediaManager(host, username, password, port);
+            this.sftpClient = new SFTPMediaDeployer(host, username, password, port);
             this.AVIMedia = FileHelper.GetInputFile("media.avi");
             this.DashMedia = FileHelper.GetInputFile("dashvideo.zip");
         }

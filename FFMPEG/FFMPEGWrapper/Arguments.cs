@@ -53,7 +53,7 @@ namespace FFMPEGWrapper
                         VideoCodec = VideoCodec.Libx264,
                         AudioCodec = AudioCodec.Aac,
                     };
-                case Profile.EspecificForDash:
+                case Profile.SimpleDash:
                     return new Arguments()
                     {
                         OverRightOutputFiles = true,

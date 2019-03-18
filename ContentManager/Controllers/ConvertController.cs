@@ -1,29 +1,24 @@
-﻿using FFMPEGWrapper;
-using FFMPEGWrapper.Enums;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
-using static Helper.FileNameExtensions;
+using static Helper.FileHelper;
 using System.Diagnostics;
 using ContentManager.WebSocketHelpers;
 using System.Threading.Tasks;
 using System;
-using System.Threading;
+using MediaManagerLib;
 
 namespace ContentManager.Controllers
 {
     [Route("/convert")]
     public class ConvertController : Controller
     {
-        private string FfmpegExecutablePath;
-        private string MP4BoxExecutablePath;
-        private string tempFolder;
-        private string convertedFolder;
-        private string compresssedFolder;
-        private FFMPEG ffmpeg;
-        private ProcessMessageHandler webSocket;
+        private readonly ProcessMessageHandler webSocket;
+        private readonly MediaManager mediaManager;
+        private readonly string tempFolder;
+        private readonly string convertedFolder;
+        private readonly string compresssedFolder;
 
         public async void OnErrorReceived(object sender, DataReceivedEventArgs d)
         {
@@ -33,19 +28,17 @@ namespace ContentManager.Controllers
 
         public async void OnConvertionDone(object sender, EventArgs e)
         {
-            Console.WriteLine("Done!");
+            await Task.Run(() => Console.WriteLine("Done!"));
         }
 
-        public ConvertController(Configuration config, ProcessMessageHandler webSocket)
+        public ConvertController(MediaManager mediaManager, ProcessMessageHandler webSocket)
         {
-            this.FfmpegExecutablePath = config.FfmpegExecutablePath;
-            this.MP4BoxExecutablePath = config.MP4BoxExecutablePath;
+            var config = new Configuration();
+
             this.tempFolder = config.TempFolder;
             this.convertedFolder = config.ConvertedFolder;
             this.compresssedFolder = config.CompresssedFolder;
-            this.ffmpeg = new FFMPEG(FfmpegExecutablePath);
-            this.ffmpeg.ErrorReceived += OnErrorReceived;
-            this.ffmpeg.ConvertionDone += OnConvertionDone;
+            this.mediaManager = mediaManager;
             this.webSocket = webSocket;
         }
 
@@ -59,19 +52,17 @@ namespace ContentManager.Controllers
         [HttpPost]
         public async Task<IActionResult> ConvertVideo()
         {
-            HandleDirectories(tempFolder);
+            HandleDirectories(this.tempFolder);
 
             var file = GetFileFromRequest(Request);
             var name = GetNameFromFileName(file.FileName);
-            var inputFilePath = tempFolder + file.FileName;
-            var outputFilePath = tempFolder + name + ".mp4";
+            var inputFilePath = this.tempFolder + file.FileName;
+            var outputFilePath = this.tempFolder + name + ".mp4";
             var outputFileName = name + ".mp4";
 
             file.Save(inputFilePath);
 
-            await ffmpeg.Convert(Profile.SimpleMP4, inputFilePath, outputFilePath);
-
-            //ffmpeg.Convert(Profile.EspecificForDash, inputFilePath, outputFilePath);
+            await mediaManager.ConvertToMP4Format(inputFilePath, outputFilePath);
 
             return UploadFile(outputFilePath, outputFileName);
         }

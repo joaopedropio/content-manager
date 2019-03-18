@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Text;
+﻿using System.IO;
+using System.Threading.Tasks;
 
-namespace MediaManager
+namespace MediaManagerLib
 {
     public interface IMediaManager
     {
@@ -12,5 +10,8 @@ namespace MediaManager
         void RemoveMedia(string remotePath);
         void UploadDirectory(string localPath, string remotePath);
         void UploadDashMedia(Stream dashzip, string remotePath);
+        Task<int> ConvertToMP4Format(string inputFilePath, string outputFilePath);
+        Task<int> SegmentToDashFormat(string inputFilePath, string outputFilePath);
+        Task<int> ConvertToMP4DashFormat(string inputFilePath, string outputFilePath);
     }
 }

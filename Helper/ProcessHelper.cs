@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace Helper
 {
-    public static class ProcessFactory
+    public static class ProcessHelper
     {
         private static ProcessStartInfo GetProcessInfo(string executable, string arguments)
         {

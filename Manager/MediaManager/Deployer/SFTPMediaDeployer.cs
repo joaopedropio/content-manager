@@ -3,21 +3,22 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
-using System.Linq;
 
-namespace MediaManager
+namespace MediaManagerLib.Deployer
 {
-    public class SFTPMediaManager : IMediaManager
+    internal class SFTPMediaDeployer
     {
         private ConnectionInfo connectionInfo;
 
-        public SFTPMediaManager(string host, string username, string password, int port = 22)
+        internal Action<ulong> ProgressStatus;
+
+        internal SFTPMediaDeployer(string host, string username, string password, int port = 22)
         {
             var authenticationMethod = new PasswordAuthenticationMethod(username, password);
             this.connectionInfo = new ConnectionInfo(host, port, username, authenticationMethod);
         }
 
-        public Stream DownloadMedia(string remotePath)
+        internal Stream DownloadMedia(string remotePath)
         {
             var media = new MemoryStream();
             CreateConnection((client) =>
@@ -27,7 +28,7 @@ namespace MediaManager
             return media;
         }
 
-        public void RemoveMedia(string remotePath)
+        internal void RemoveMedia(string remotePath)
         {
             CreateConnection((client) =>
             {
@@ -35,15 +36,15 @@ namespace MediaManager
             });
         }
 
-        public void UploadMedia(Stream media, string remotePath)
+        internal void UploadMedia(Stream media, string remotePath)
         {
             CreateConnection((client) =>
             {
-                client.UploadFile(media, remotePath);
+                client.UploadFile(media, remotePath, ProgressStatus);
             });
         }
 
-        public void UploadDirectory(string localPath, string remotePath)
+        internal void UploadDirectory(string localPath, string remotePath)
         {
             CreateConnection((client) =>
             {
@@ -79,7 +80,7 @@ namespace MediaManager
             }
         }
 
-        public void CreateConnection(Action<SftpClient> action)
+        private void CreateConnection(Action<SftpClient> action)
         {
             using (var client = new SftpClient(this.connectionInfo))
             {
@@ -100,7 +101,7 @@ namespace MediaManager
         private string GetMediaFolderName(string mediaFolder) =>
             mediaFolder.Split(new string[] { "/" }, StringSplitOptions.RemoveEmptyEntries)[1];
 
-        public void UploadDashMedia(Stream dashzip, string remotePath)
+        internal void UploadDashMedia(Stream dashzip, string remotePath)
         {
             using (var zip = new ZipArchive(dashzip))
             {

@@ -14,13 +14,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\FFMPEGWrapper\FFMPEGWrapper.csproj" />
-    <ProjectReference Include="..\Helper\Helper.csproj" />
-    <ProjectReference Include="..\MP4BoxWrapper\MP4BoxWrapper.csproj" />
+    <Folder Include="Domain\" />
+    <Folder Include="Models\" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Models\" />
+    <ProjectReference Include="..\Manager\MediaManager\MediaManagerLib.csproj" />
   </ItemGroup>
 
 </Project>

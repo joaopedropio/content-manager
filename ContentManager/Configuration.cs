@@ -16,6 +16,9 @@ namespace ContentManager
         public string ConvertedFolder { get; }
         public string CompresssedFolder { get; }
         public string SFTPHost { get; }
+        public string SFTPUsername { get; }
+        public string SFTPPassword { get; }
+        public int SFTPPort { get; }
 
         public Configuration() : this(new ConfigurationBuilder().AddEnvironmentVariables().Build()) { }
 
@@ -37,6 +40,10 @@ namespace ContentManager
 
             // Content Server SFTP
             this.SFTPHost = configuration.GetValue<string>("SFTP_HOST") ?? "http://content-server";
+            var sftpPort = configuration.GetValue<string>("SFTP_PORT") ?? "2222";
+            this.SFTPPort = int.Parse(sftpPort);
+            this.SFTPUsername = configuration.GetValue<string>("SFTP_USERNAME") ?? "content";
+            this.SFTPPassword = configuration.GetValue<string>("SFTP_PASSWORD") ?? "password";
         }
     }
 }
