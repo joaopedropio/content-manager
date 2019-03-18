@@ -6,3 +6,6 @@ out
 *.user
 .git
 *.sln
+*.md
+Dockerfile
+.gitignore
