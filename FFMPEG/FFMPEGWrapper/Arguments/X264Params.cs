@@ -1,12 +1,12 @@
-﻿namespace FFMPEGWrapper.Enums
+﻿namespace FFMPEGWrapper.Arguments
 {
-    public class X264Params
+    public class X264Params : IArgument
     {
         public int KeyInt { get; set; } = -1;
         public int MinKeyInt { get; set; } = -1;
         public bool NoSceneCut { get; set; }
 
-        public override string ToString()
+        public string ToStringRepresentation()
         {
             var result = "'";
 
@@ -17,7 +17,7 @@
             result = result.TrimEnd(':');
             result += "'";
 
-            return result;
+            return $" -x264-params {result}";
         }
     }
 }

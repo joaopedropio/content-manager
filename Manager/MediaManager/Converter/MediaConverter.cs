@@ -57,8 +57,10 @@ namespace MediaManagerLib.Converter
 
             //formFile.Save(inputFilePath);
 
-            var exitStatus = await ffmpeg.Convert(Profile.SimpleMP4, inputFilePath, outputFilePath);
-            return exitStatus;
+            ffmpeg.Convert()
+
+            //var exitStatus = await ffmpeg.Convert(Profile.SimpleMP4, inputFilePath, outputFilePath);
+            //return exitStatus;
 
             //ffmpeg.Convert(Profile.EspecificForDash, inputFilePath, outputFilePath);
         }

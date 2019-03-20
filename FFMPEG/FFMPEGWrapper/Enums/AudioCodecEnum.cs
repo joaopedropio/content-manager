@@ -1,7 +1,7 @@
 ﻿namespace FFMPEGWrapper.Enums
 {
-    public enum VideoCodec
+    public enum AudioCodecEnum
     {
-        Libx264
+        Aac
     }
 }
